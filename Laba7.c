@@ -21,7 +21,11 @@ char* dtoa(double num, int npos, int nfr)
 
 	str = (char*)calloc(npos, sizeof(char));
 
-	if (num < 0)
+	long double drob;
+
+	drob = fabs(num) - (int)fabs(num);
+
+	if ( (num < 0) && ( (nfr != 0) || (drob * 10 >= 5) || (num1 < -1) ) )
 	{
 
 		str[0] = '-';
@@ -30,8 +34,6 @@ char* dtoa(double num, int npos, int nfr)
 
 		start = 1;
 	}
-
-	long double drob;
 
 	if (num1 > 0)
 	{
@@ -60,7 +62,6 @@ char* dtoa(double num, int npos, int nfr)
 		num1 /= 10;
 	}
 
-	drob = fabs(num) - (int)fabs(num);
 
 	if (nfr != 0)
 	{
@@ -117,33 +118,6 @@ char* dtoa(double num, int npos, int nfr)
 
 		str[count - 1]++;
 	}
-
-	/*if ((int)drob >= 5)
-	{
-		if ( (str[npos - 1] == '9') & (nfr == 0) )
-		{
-			str[npos - 1] = '0';
-
-			str[npos - 2]++;
-		}
-
-		for (i = count - 1; i >= start; i--)
-		{
-			if (str[i] == ':')
-			{
-				str[i] = '0';
-
-				if (i != start) str[i - 1]++;
-			}
-			else
-			{
-				if(nfr == 0) str[i]++;
-
-				break;
-			}
-		}
-
-	}*/
 
 	if ((int)drob >= 5)
 	{
@@ -238,7 +212,7 @@ int main()
 		return 0;
 	}
 
-	for (int i = 0; i < npos + 1; i++) printf("%c", str[i]);
+	for (int i = 0; i < npos; i++) printf("%c", str[i]);
 
 	free(str);
 
